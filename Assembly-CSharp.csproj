@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\JoyButtonScript.cs" />
     <Compile Include="Assets\Scripts\MainManager.cs" />
     <Compile Include="Assets\Scripts\MenuManager.cs" />
+    <Compile Include="Assets\Scripts\MenuSkinActivation.cs" />
     <Compile Include="Assets\Scripts\Shop\ShopManagerScript.cs" />
     <Compile Include="Assets\Scripts\Shop\ShopModelScript.cs" />
     <Compile Include="Assets\Scripts\SkinManagerScript.cs" />

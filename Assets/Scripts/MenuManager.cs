@@ -25,6 +25,12 @@ public class MenuManager : MonoBehaviour {
     public GameObject levelsPanel;
 
     public Animator transAnim;
+    public Animator chairliftAnim;
+
+    public void PlayerClick()
+    {
+        chairliftAnim.Play("Touched");
+    }
 
     public void PlayClick()
     {

@@ -329,25 +329,36 @@ public class player_Script : MonoBehaviour {
 
     void Flip()
     {
+       
         Vector3 m_EulerAngleVelocity = new Vector3(-triggers * Values.Instance.flipRotation, 0f, 0f);
         Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.deltaTime);
         rb.MoveRotation(rb.rotation * deltaRotation);
 
-        Debug.Log(transform.rotation.eulerAngles.y);
-        if (anim.GetBool("Backwards") == false)
+        //Debug.Log(transform.rotation.eulerAngles.y);
+
+
+        if (anim.GetBool("backwards") == false)
         {
             if (prevY_Flip > 180 && transform.rotation.eulerAngles.y <= 180)
             {
-                //Debug.Log("zwiekszam flipa");
                 anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
             }
         }
         else
         {
-            if (prevY_Flip < 180 && transform.rotation.eulerAngles.y >= 180)
+            if (triggers < 0)
             {
-                //Debug.Log("zwiekszam flipa");
-                anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
+                if (prevY_Flip < 180 && transform.rotation.eulerAngles.y >= 180)
+                {
+                    anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
+                }
+            }
+            else
+            {
+                if (prevY_Flip > 180 && transform.rotation.eulerAngles.y <= 180)
+                {
+                    anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
+                }
             }
         }
         //Debug.Log(transform.rotation.eulerAngles);
@@ -400,10 +411,29 @@ public class player_Script : MonoBehaviour {
 
     void ToGrind(Transform railTransform)
     {
+        anim.SetBool("alreadyFlip", false);
+        anim.SetBool("wasGrinding", true);
+       
         prevY_Flip = 0;
         Values.Instance.state = Values.State.Grind;
         rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotationY;
-        transform.rotation = railTransform.rotation;
+        transform.rotation = new Quaternion(railTransform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
+
+        objectToSpin.transform.localRotation = new Quaternion(0f, objectToSpin.transform.localRotation.y, objectToSpin.transform.localRotation.z, objectToSpin.transform.localRotation.w);
+    
+
+        if (objectToSpin.transform.localEulerAngles.y > 180f - rotationEps && objectToSpin.transform.localEulerAngles.y < 180f + rotationEps)
+        {
+            //anim.Play("IDLEtoFAKIE");
+            anim.SetBool("backwards", true);
+            //objectToSpin.transform.localEulerAngles.y = 180f;
+        }
+        else if (objectToSpin.transform.localEulerAngles.y < rotationEps)
+        {
+            //anim.Play("IDLE");
+            anim.SetBool("backwards", false);
+        }
+
 
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("shiftyHold"))
         {
@@ -415,6 +445,7 @@ public class player_Script : MonoBehaviour {
 
     void ToGround()
     {
+        anim.SetBool("wasGrinding", false);
         if(started)
             PlayParticles(impactSnow);
 
@@ -589,6 +620,5 @@ public class player_Script : MonoBehaviour {
 }
 /* TODO
  * achievments in levels
- * dodawanie flipów tyłem jest ostro spierdolone
- * generalnie liczenie flipów jest spierdolone (backflip na raila i frontflip of to 2x backflip)
+ * liczenie flipów po wyjściu z raila jest spierdolone (backflip na raila i frontflip of to 2x backflip, generalnie flipy po railu)
  */

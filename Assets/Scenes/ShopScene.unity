@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -532,7 +533,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 741349304}
   m_HandleRect: {fileID: 741349303}
   m_Direction: 0
-  m_Value: -0.000000105688585
+  m_Value: -0.00000021137717
   m_Size: 0.4379562
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1723,7 +1724,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 704974846}
-  rotSpeed: 1
+  rotSpeed: 0.4
 --- !u!95 &704974846 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 9500000, guid: afc4b71cea592d94b85fdc2e06d1fef3,
@@ -2716,6 +2717,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 92708b6a9094b4b5ea1c08529f33934a, type: 2}
+    - target: {fileID: 100004, guid: afc4b71cea592d94b85fdc2e06d1fef3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 100006, guid: afc4b71cea592d94b85fdc2e06d1fef3, type: 3}
       propertyPath: m_Name
       value: ebebe
@@ -3514,8 +3519,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1558299913}
   m_HandleRect: {fileID: 1558299912}
   m_Direction: 0
-  m_Value: -0.00000021415845
-  m_Size: 0.6122449
+  m_Value: -0.00000021415839
+  m_Size: 0.61224484
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5329,8 +5334,9 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1922296663}
   m_Enabled: 1
-  serializedVersion: 9
+  serializedVersion: 10
   m_Type: 1
+  m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
