@@ -81,6 +81,37 @@ public class MenuManager : MonoBehaviour {
     }
 
     void Start () {
+        if(!PlayerPrefs.HasKey("Backflips"))
+            PlayerPrefs.SetInt("Backflips", 0);
+        
+
+        if (!PlayerPrefs.HasKey("Frontflips"))
+            PlayerPrefs.SetInt("Frontflips", 0);
+
+        if (!PlayerPrefs.HasKey("Frontflips_off_rail"))
+            PlayerPrefs.SetInt("Frontflips_off_rail", 0);
+
+        if (!PlayerPrefs.HasKey("Backflips_off_rail"))
+            PlayerPrefs.SetInt("Backflips_off_rail", 0);
+
+        if (!PlayerPrefs.HasKey("360s"))
+            PlayerPrefs.SetInt("360s", 0);
+
+        if (!PlayerPrefs.HasKey("Levels"))
+            PlayerPrefs.SetInt("Levels", 0);
+
+        if (!PlayerPrefs.HasKey("default"))
+            PlayerPrefs.SetInt("default", 1);
+
+        if (!PlayerPrefs.HasKey("Tutorial"))
+            PlayerPrefs.SetInt("Tutorial", 0);
+
+        if (!PlayerPrefs.HasKey("DoubleBackflip"))
+            PlayerPrefs.SetInt("DoubleBackflip", 0);
+
+        if (!PlayerPrefs.HasKey("ad"))
+            PlayerPrefs.SetInt("ad", 0);
+
         camMainPos = Base.position;
         camLevelsPos = Levels.position;
         SceneManager.sceneLoaded += OnSceneLoaded;

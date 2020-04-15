@@ -14,6 +14,8 @@ public class ShopManagerScript : MonoBehaviour
 
     public Material[] skinMaterials;
 
+    public GameObject infoHelper;
+
     void resetSki()
     {
         for (int i = 0; i < skiParts.Length; i++)
@@ -22,6 +24,14 @@ public class ShopManagerScript : MonoBehaviour
 
     public void SetSki_Click(string name)
     {
+
+        if (PlayerPrefs.GetInt(Values.achievmentsDict[name].Item1) < Values.achievmentsDict[name].Item2)
+        {
+            infoHelper.GetComponent<shopInfoHelper>().SetInfoDialog(name);
+            return;
+        }
+
+
         PlayerPrefs.SetString("currentSki", name);
 
         resetSki();
@@ -66,6 +76,13 @@ public class ShopManagerScript : MonoBehaviour
 
     public void SetHelmet_Click(string name)
     {
+
+        if (PlayerPrefs.GetInt(Values.achievmentsDict[name].Item1) < Values.achievmentsDict[name].Item2)
+        {
+            infoHelper.GetComponent<shopInfoHelper>().SetInfoDialog(name);
+            return;
+        }
+
         PlayerPrefs.SetString("currentHelmet", name);
 
         resetHelmet();

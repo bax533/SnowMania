@@ -229,7 +229,7 @@ public class score_Script : MonoBehaviour {
             //else
             //    currentFlip_Text.text = "";
 
-            multiplier = 1 + 0.3f * anim.GetInteger("Flips") + 0.2f * anim.GetInteger("180s");
+            multiplier = 1 + 0.3f * (_flips + _grindFlips) + 0.2f * anim.GetInteger("180s");
             currentTrickScore_Text.text = currentTrickScore > 0 ? currentTrickScore.ToString() : "";
             currentTrickScore_Text.text  += multiplier > 1 && currentTrickScore > 0 ? " x " + multiplier.ToString() : "";
             currentFlipScore += anim.GetInteger("Flips") * 20;
@@ -262,24 +262,13 @@ public class score_Script : MonoBehaviour {
             anim.SetBool("alreadyFlip", false);
         }
 	}
-    
-
-    void SetAchievements()
-    {
-        if(currentFlip_Text.text.Contains("Backflip"))
-        {
-            PlayerPrefs.SetInt("Backflips", PlayerPrefs.GetInt("Backflips") + anim.GetInteger("Flips"));
-        }
-        else if (currentFlip_Text.text.Contains("Frontflip"))
-        {
-            PlayerPrefs.SetInt("Frontflips", PlayerPrefs.GetInt("Frontflips") + anim.GetInteger("Flips"));
-        }
-    }
 
     public void resetCurrentScore()
     {
         if (scoresAnim.GetCurrentAnimatorStateInfo(0).IsName("idle"))
         {
+            addToAchievments();
+
             _flips = 0;
             _grindFlips = 0;
             levelScore += (int)Math.Ceiling(currentTrickScore * multiplier);
@@ -302,10 +291,39 @@ public class score_Script : MonoBehaviour {
     }
 
 
+    void addToAchievments()
+    {
+        //Debug.Log(_grindFlips);
+        //Debug.Log(grindFlips_Text.text.Contains("Backflip"));
+
+        if (currentFlip_Text.text.Contains("Backflip"))
+            PlayerPrefs.SetInt("Backflips", PlayerPrefs.GetInt("Backflips") + _flips);
+
+        if (currentFlip_Text.text.Contains("Frontflip"))
+            PlayerPrefs.SetInt("Frontflips", PlayerPrefs.GetInt("Frontflips") + _flips);
+
+
+        if (grindFlips_Text.text.Contains("Backflip"))
+        {
+            PlayerPrefs.SetInt("Backflips_off_rail", PlayerPrefs.GetInt("Backflips_off_rail") + _grindFlips);
+            Debug.Log(PlayerPrefs.GetInt("Backflips_off_rail"));
+            Debug.Log(_grindFlips);
+        }
+        if (grindFlips_Text.text.Contains("Frontflip"))
+            PlayerPrefs.SetInt("Frontflips_off_rail", PlayerPrefs.GetInt("Frontflips_off_rail") + _grindFlips);
+
+        if(currentSpin_Text.text.Contains("360"))
+            PlayerPrefs.SetInt("360s", PlayerPrefs.GetInt("360s") + 1);
+
+        if (currentFlip_Text.text.Contains("Backflip") && (_flips == 2 || _grindFlips == 2))
+            PlayerPrefs.SetInt("DoubleBackflip", 1);
+    }
+
     public static void EndLVL()
     {
         if(!PlayerPrefs.HasKey("LEVEL"+Values.Instance.current_lvl.ToString()) || levelScore > PlayerPrefs.GetInt("LEVEL"+Values.Instance.current_lvl.ToString()))
         {
+            PlayerPrefs.SetInt("Levels", Math.Max(PlayerPrefs.GetInt("Levels"), Values.Instance.current_lvl));
             PlayerPrefs.SetInt("LEVEL" + Values.Instance.current_lvl.ToString(), levelScore);
         }
     }

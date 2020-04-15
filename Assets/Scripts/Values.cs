@@ -10,7 +10,7 @@ public class Values : MonoBehaviour {
 
     public float maxGround_Speed = 25f, addGround_Speed = 1.0f, minGround_Speed, brakeGround_Speed, airSpeed, flipRotation, addSpinSpeed, maxSpinSpeed, brakeFinish_Mult;
 
-    public enum State { Ground, Air, Finish, Grind};
+    public enum State { Ground, Air, Finish, Grind };
     public State state = State.Ground;
     public bool END = false;
     public bool PAUSE = false;
@@ -33,6 +33,27 @@ public class Values : MonoBehaviour {
         { "japanGrab", 1100 },
         { "bowArrow", 1100 },
         { "crossAir", 1100 }
+
+    };
+
+
+    public static Dictionary<string, Tuple<string, int>> achievmentsDict= new Dictionary<string, Tuple<string, int>> //skinname -> achievment_name, achievment_val
+    {
+        { "sdefault", new Tuple<string, int>("default", 1) },
+        { "sp1_1", new Tuple<string, int>("Frontflips", 100) },
+        { "sp1_2", new Tuple<string, int>("Backflips", 100) },
+        { "sp1_3", new Tuple<string, int>("Levels", 11) },
+        { "sp2_1", new Tuple<string, int>("Frontflips_off_rail", 50) },
+        { "sp2_2", new Tuple<string, int>("Backflips_off_rail", 50) },
+        { "sp2_3", new Tuple<string, int>("360s", 75) },
+        { "sgold", new Tuple<string, int>("Levels", 20) },
+        { "hdefault", new Tuple<string, int>("default", 1) },
+        { "hf1", new Tuple<string, int>("Tutorial", 1) },
+        { "hf2", new Tuple<string, int>("Levels", 3) },
+        { "hp1", new Tuple<string, int>("DoubleBackflip", 1) },
+        { "hp2", new Tuple<string, int>("Levels", 11) },
+        { "hp3", new Tuple<string, int>("ad", 1) },
+        { "hgold", new Tuple<string, int>("Levels", 20) },
 
     };
 

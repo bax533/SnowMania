@@ -106,5 +106,8 @@ public class MenuSkinActivation : MonoBehaviour
     void Awake()
     {
         ActivateSkins();
+
+
+
     }
 }
