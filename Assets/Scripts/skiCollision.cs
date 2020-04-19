@@ -12,6 +12,6 @@ public class skiCollision : MonoBehaviour { //NIEUZYWANE
     {
         
         // measure angle
-        //Debug.Log(Vector3.Angle(vel, -normal));
+        //(Vector3.Angle(vel, -normal));
     }
 }

@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using System.Threading;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class score_Script : MonoBehaviour {
 
 
     public TextMeshProUGUI levelScore_Text;
-    public TextMeshProUGUI levelScoreEnd_Text;
+    public TextMeshProUGUI levelScoreEnd_Text, levelHighscoreEnd_Text;
     public Text currentTrickName_Text, currentTrickScore_Text, currentSpin_Text, currentFlip_Text, grindFlips_Text;
     public GameObject grindFlipsArrow;
+    public static GameObject newHighscoreLabel;
 
     public static int levelScore;
     public static float multiplier = 1f;
@@ -21,10 +23,13 @@ public class score_Script : MonoBehaviour {
     bool already_trick, isGrinding;
     bool alreadyFlip = false, alreadyOnGround = false;
 
+
+    int sceneNr;
     public Animator anim, scoresAnim;
 
-    void Start()
+    void Awake()
     {
+        sceneNr = Values.GetNrFromScene(SceneManager.GetActiveScene().name);
         currentFlip_Text.text = "";
         currentTrickName_Text.text = "";
         currentSpin_Text.text = "";
@@ -41,7 +46,7 @@ public class score_Script : MonoBehaviour {
         if (Values.Instance.state == Values.State.Air || Values.Instance.state == Values.State.Grind)
         {
             alreadyOnGround = false;
-            if (anim.GetCurrentAnimatorStateInfo(0).IsName("truckDriverHold"))
+            if (anim.GetCurrentAnimatorStateInfo(0).IsName("truckDriverHold") || anim.GetCurrentAnimatorStateInfo(0).IsName("truckDriverHold_g"))
             {
                 currentTrickScore += already_trick ? Values.trickAdd_score : Values.trick_scores["truckDriver"];
                 if (!already_trick)
@@ -52,7 +57,7 @@ public class score_Script : MonoBehaviour {
                 }
                 already_trick = true;
             }
-            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("bluntGrabHold"))
+            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("bluntGrabHold") || anim.GetCurrentAnimatorStateInfo(0).IsName("bluntGrabHold_g"))
             {
                 currentTrickScore += already_trick ? Values.trickAdd_score : Values.trick_scores["bluntGrab"];
                 if (!already_trick)
@@ -63,7 +68,7 @@ public class score_Script : MonoBehaviour {
                 }
                 already_trick = true;
             }
-            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("muteGrabHold"))
+            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("muteGrabHold") || anim.GetCurrentAnimatorStateInfo(0).IsName("muteGrabHold_g"))
             {
                 currentTrickScore += already_trick ? Values.trickAdd_score : Values.trick_scores["muteGrab"];
                 if (!already_trick)
@@ -74,7 +79,7 @@ public class score_Script : MonoBehaviour {
                 }
                 already_trick = true;
             }
-            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("tailGrabHold"))
+            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("tailGrabHold") || anim.GetCurrentAnimatorStateInfo(0).IsName("tailGrabHold_g"))
             {
                 currentTrickScore += already_trick ? Values.trickAdd_score : Values.trick_scores["tailGrab"];
                 if (!already_trick)
@@ -86,7 +91,7 @@ public class score_Script : MonoBehaviour {
                 already_trick = true;
                 already_trick = true;
             }
-            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("shiftyHold"))
+            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("shiftyHold") || anim.GetCurrentAnimatorStateInfo(0).IsName("shiftyHold_g"))
             {
                 currentTrickScore += already_trick ? Values.trickAdd_score : Values.trick_scores["shifty"];
                 if (!already_trick)
@@ -98,7 +103,7 @@ public class score_Script : MonoBehaviour {
                 already_trick = true;
                 already_trick = true;
             }
-            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("bowArrowHold"))
+            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("bowArrowHold") || anim.GetCurrentAnimatorStateInfo(0).IsName("bowArrowHold_g"))
             {
                 currentTrickScore += already_trick ? Values.trickAdd_score : Values.trick_scores["bowArrow"];
                 if (!already_trick)
@@ -110,7 +115,7 @@ public class score_Script : MonoBehaviour {
                 already_trick = true;
                 already_trick = true;
             }
-            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("japanGrabHold"))
+            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("japanGrabHold") || anim.GetCurrentAnimatorStateInfo(0).IsName("japanGrabHold_g"))
             {
                 currentTrickScore += already_trick ? Values.trickAdd_score : Values.trick_scores["japanGrab"];
                 if (!already_trick)
@@ -122,7 +127,7 @@ public class score_Script : MonoBehaviour {
                 already_trick = true;
                 already_trick = true;
             }
-            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("crossAirHold"))
+            else if (anim.GetCurrentAnimatorStateInfo(0).IsName("crossAirHold") || anim.GetCurrentAnimatorStateInfo(0).IsName("crossAirHold_g"))
             {
                 currentTrickScore += already_trick ? Values.trickAdd_score : Values.trick_scores["crossAir"];
                 if (!already_trick)
@@ -246,6 +251,7 @@ public class score_Script : MonoBehaviour {
         }
 
         levelScoreEnd_Text.text = levelScore.ToString();
+        levelHighscoreEnd_Text.text = Math.Max(levelScore, PlayerPrefs.GetInt("LEVEL"+sceneNr.ToString())).ToString();
 
         if(Values.Instance.END)
         {
@@ -293,8 +299,8 @@ public class score_Script : MonoBehaviour {
 
     void addToAchievments()
     {
-        //Debug.Log(_grindFlips);
-        //Debug.Log(grindFlips_Text.text.Contains("Backflip"));
+        //(_grindFlips);
+        //(grindFlips_Text.text.Contains("Backflip"));
 
         if (currentFlip_Text.text.Contains("Backflip"))
             PlayerPrefs.SetInt("Backflips", PlayerPrefs.GetInt("Backflips") + _flips);
@@ -306,8 +312,6 @@ public class score_Script : MonoBehaviour {
         if (grindFlips_Text.text.Contains("Backflip"))
         {
             PlayerPrefs.SetInt("Backflips_off_rail", PlayerPrefs.GetInt("Backflips_off_rail") + _grindFlips);
-            Debug.Log(PlayerPrefs.GetInt("Backflips_off_rail"));
-            Debug.Log(_grindFlips);
         }
         if (grindFlips_Text.text.Contains("Frontflip"))
             PlayerPrefs.SetInt("Frontflips_off_rail", PlayerPrefs.GetInt("Frontflips_off_rail") + _grindFlips);
@@ -321,10 +325,13 @@ public class score_Script : MonoBehaviour {
 
     public static void EndLVL()
     {
-        if(!PlayerPrefs.HasKey("LEVEL"+Values.Instance.current_lvl.ToString()) || levelScore > PlayerPrefs.GetInt("LEVEL"+Values.Instance.current_lvl.ToString()))
+
+        int sceneNr = Values.GetNrFromScene(SceneManager.GetActiveScene().name);
+        Debug.Log(PlayerPrefs.GetInt("LEVEL" + sceneNr.ToString()));
+        if (!PlayerPrefs.HasKey("LEVEL" + sceneNr.ToString()) || levelScore > PlayerPrefs.GetInt("LEVEL" + sceneNr.ToString()))
         {
-            PlayerPrefs.SetInt("Levels", Math.Max(PlayerPrefs.GetInt("Levels"), Values.Instance.current_lvl));
-            PlayerPrefs.SetInt("LEVEL" + Values.Instance.current_lvl.ToString(), levelScore);
+            PlayerPrefs.SetInt("Levels", Math.Max(PlayerPrefs.GetInt("Levels"), sceneNr));
+            PlayerPrefs.SetInt("LEVEL" + sceneNr.ToString(), levelScore);
         }
     }
 }

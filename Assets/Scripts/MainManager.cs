@@ -19,7 +19,6 @@ public class MainManager : MonoBehaviour {
 
     public void LoadLevel(int nr)
     {
-        Values.Instance.current_lvl = nr;
         endLevel = false;
         StartCoroutine(LoadLevelRoutine("LEVEL" + nr.ToString()));
     }
