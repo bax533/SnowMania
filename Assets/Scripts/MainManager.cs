@@ -15,6 +15,20 @@ public class MainManager : MonoBehaviour {
     public void LoadMenu()
     {
         StartCoroutine(LoadLevelRoutine(0));
+        Time.timeScale = 1;
+    }
+
+    public void LoadByName(string lvlName)
+    {
+        endLevel = false;
+        StartCoroutine(LoadLevelRoutine(lvlName));
+    }
+
+    public void FinishTutorialClick()
+    {
+        endLevel = false;
+        PlayerPrefs.SetInt("Tutorial", 27);
+        StartCoroutine(LoadLevelRoutine(0));
     }
 
     public void LoadLevel(int nr)
@@ -27,6 +41,7 @@ public class MainManager : MonoBehaviour {
     {
         int sceneIndex = SceneManager.GetActiveScene().buildIndex;
         StartCoroutine(LoadLevelRoutine(sceneIndex));
+        Time.timeScale = 1;
     }
 
     public void Crash()
@@ -45,14 +60,14 @@ public class MainManager : MonoBehaviour {
     public void Pause()
     {
         pausePanel.SetActive(true);
-        Values.Instance.PAUSE = true;
+        //Values.Instance.PAUSE = true;
         Time.timeScale = 0;
     }
 
     public void Continue()
     {
         pausePanel.SetActive(false);
-        Values.Instance.PAUSE = false;
+        //Values.Instance.PAUSE = false;
         Time.timeScale = 1;
     }
 

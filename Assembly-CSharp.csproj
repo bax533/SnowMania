@@ -84,6 +84,7 @@
     <Compile Include="Assets\Scripts\skiCollision.cs" />
     <Compile Include="Assets\Scripts\testButton.cs" />
     <Compile Include="Assets\Scripts\thrashscript.cs" />
+    <Compile Include="Assets\Scripts\tutorialManager_script.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro.cginc" />
     <None Include="Assets\OutlineToolkit\Shader\EdgeDetect.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Overlay.shader" />

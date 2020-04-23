@@ -12,8 +12,8 @@ public class score_Script : MonoBehaviour {
 
     public TextMeshProUGUI levelScore_Text;
     public TextMeshProUGUI levelScoreEnd_Text, levelHighscoreEnd_Text;
-    public Text currentTrickName_Text, currentTrickScore_Text, currentSpin_Text, currentFlip_Text, grindFlips_Text;
-    public GameObject grindFlipsArrow;
+    public Text currentTrickName_Text, currentTrickScore_Text, currentSpin_Text, currentFlip_Text, grindFlips_Text, achievment_Text;
+    public GameObject grindFlipsArrow, achievmentPanel;
     public static GameObject newHighscoreLabel;
 
     public static int levelScore;
@@ -243,6 +243,9 @@ public class score_Script : MonoBehaviour {
         {
             if (!alreadyOnGround)
             {
+                if (currentSpin_Text.text.Contains("360") && currentTrickName_Text.text.Length > 5) //tutorial stuff
+                    PlayerPrefs.SetInt("360withGrab", 27);
+
                 scoresAnim.Play("scorePop");
                 alreadyOnGround = true;
             }
@@ -302,25 +305,65 @@ public class score_Script : MonoBehaviour {
         //(_grindFlips);
         //(grindFlips_Text.text.Contains("Backflip"));
 
+        
+
         if (currentFlip_Text.text.Contains("Backflip"))
+        {
             PlayerPrefs.SetInt("Backflips", PlayerPrefs.GetInt("Backflips") + _flips);
+            if (PlayerPrefs.GetInt("Backflips") == Values.achievmentsDict["sp1_2"].Item2)
+            {
+                achievment_Text.text = "New ski unlocked!";
+                achievmentPanel.GetComponent<Animator>().Play("achievmentAnim");
+            }
+        }
 
         if (currentFlip_Text.text.Contains("Frontflip"))
+        {
             PlayerPrefs.SetInt("Frontflips", PlayerPrefs.GetInt("Frontflips") + _flips);
-
+            if (PlayerPrefs.GetInt("Frontflips") == Values.achievmentsDict["sp1_1"].Item2)
+            {
+                achievment_Text.text = "New ski unlocked!";
+                achievmentPanel.GetComponent<Animator>().Play("achievmentAnim");
+            }
+        }
 
         if (grindFlips_Text.text.Contains("Backflip"))
         {
             PlayerPrefs.SetInt("Backflips_off_rail", PlayerPrefs.GetInt("Backflips_off_rail") + _grindFlips);
+            if (PlayerPrefs.GetInt("Backflips_off_rail") == Values.achievmentsDict["sp2_2"].Item2)
+            {
+                achievment_Text.text = "New ski unlocked!";
+                achievmentPanel.GetComponent<Animator>().Play("achievmentAnim");
+            }
         }
         if (grindFlips_Text.text.Contains("Frontflip"))
+        {
             PlayerPrefs.SetInt("Frontflips_off_rail", PlayerPrefs.GetInt("Frontflips_off_rail") + _grindFlips);
-
-        if(currentSpin_Text.text.Contains("360"))
+            if (PlayerPrefs.GetInt("Frontflips_off_rail") == Values.achievmentsDict["sp2_1"].Item2)
+            {
+                achievment_Text.text = "New ski unlocked!";
+                achievmentPanel.GetComponent<Animator>().Play("achievmentAnim");
+            }
+        }
+        if (currentSpin_Text.text.Contains("360"))
+        {
             PlayerPrefs.SetInt("360s", PlayerPrefs.GetInt("360s") + 1);
+            if (PlayerPrefs.GetInt("360s") == Values.achievmentsDict["sp2_3"].Item2)
+            {
+                achievment_Text.text = "New ski unlocked!";
+                achievmentPanel.GetComponent<Animator>().Play("achievmentAnim");
+            }
+        }
 
         if (currentFlip_Text.text.Contains("Backflip") && (_flips == 2 || _grindFlips == 2))
+        {
+            if (PlayerPrefs.GetInt("DoubleBackflip") == 0)
+            {
+                achievment_Text.text = "New helmet unlocked!";
+                achievmentPanel.GetComponent<Animator>().Play("achievmentAnim");
+            }
             PlayerPrefs.SetInt("DoubleBackflip", 1);
+        }
     }
 
     public static void EndLVL()

@@ -154,6 +154,13 @@ MonoBehaviour:
   Levels: {fileID: 344340350}
   lerpSpeed: 3
   rotationSpeed: 1.3
+  playButton: {fileID: 493699280}
+  lockedCol:
+    serializedVersion: 2
+    rgba: 4289572269
+  unlockedCol:
+    serializedVersion: 2
+    rgba: 4294967295
   highscoresText:
   - {fileID: 0}
   - {fileID: 376872850}
@@ -2629,7 +2636,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 18697062}
-        m_MethodName: PlayClick
+        m_MethodName: LoadTutorial
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

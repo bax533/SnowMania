@@ -19,6 +19,10 @@ public class MenuManager : MonoBehaviour {
 
     bool mainMenu = true;
 
+    public Button playButton;
+    public Color32 lockedCol, unlockedCol;
+
+
     public Text[] highscoresText = new Text[10];
     public Camera mainCam;
     public GameObject mainPanel;
@@ -34,10 +38,13 @@ public class MenuManager : MonoBehaviour {
 
     public void PlayClick()
     {
-        mainMenu = false;
-        startTime = Time.time;
-        mainPanel.SetActive(false);
-        levelsPanel.SetActive(true);
+        if (PlayerPrefs.GetInt("Tutorial") != 0)
+        {
+            mainMenu = false;
+            startTime = Time.time;
+            mainPanel.SetActive(false);
+            levelsPanel.SetActive(true);
+        }
     }
 
     public void ShopClick()
@@ -53,11 +60,15 @@ public class MenuManager : MonoBehaviour {
         levelsPanel.SetActive(false);
     }
 
+    public void LoadTutorial()
+    {
+        StartCoroutine(LoadLevelRoutine("TUTOR0"));
+    }
+
     public void LoadLevel(int nr)
     {
         if (PlayerPrefs.HasKey("LEVEL" + (nr-1).ToString()) || nr == 1)
         {
-            Values.Instance.current_lvl = nr;
             StartCoroutine(LoadLevelRoutine("LEVEL" + nr.ToString()));
         }
     }
@@ -122,15 +133,21 @@ public class MenuManager : MonoBehaviour {
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name.Contains("LEVEL"))
-        {
-            int nr = Values.GetNrFromScene(scene.name);
-            Values.Instance.current_lvl = nr;
-        }
+
     }
 
     void Awake()
     {
+        if(PlayerPrefs.GetInt("Tutorial") != 0)
+        {
+            playButton.GetComponent<Image>().color = unlockedCol;
+        }
+        else
+        {
+            playButton.GetComponent<Image>().color = lockedCol;
+        }
+
+
         for(int i=1; i <= Values.Instance.levelsCount; i++)
         {
             if(PlayerPrefs.HasKey("LEVEL"+i.ToString()))

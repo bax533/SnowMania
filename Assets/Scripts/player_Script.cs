@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class player_Script : MonoBehaviour {
 
     Rigidbody rb;
-    bool spacebar, spin, left, down, right, up, started;
+    bool spacebar, spin, left, down, right, up, started, alreadyflipping;
 
     private float rotationEps = 6.5f;
     float prevY_Flip = 0;
@@ -19,7 +19,7 @@ public class player_Script : MonoBehaviour {
     public Collider[] colliders;
     public Animator anim;
 
-    float currentSpeed;
+    public float currentSpeed;
 
     private Joystick joystick;
     private JoyButtonScript rideButton, spinButton;
@@ -32,8 +32,6 @@ public class player_Script : MonoBehaviour {
     public GameObject[] helmetParts; // 0 - bottom; 1 - pattern;
 
     public Material[] skinMaterials;
-
-
 
     //Ragdoll Objects
     public GameObject Torso;
@@ -150,8 +148,8 @@ public class player_Script : MonoBehaviour {
 
     void Awake()
     {
-        
 
+        //PlayerPrefs.SetInt("DoubleBackflip", 0);
         joystick = FindObjectOfType<Joystick>();
         spinButton = FindObjectsOfType<JoyButtonScript>()[1];
         rideButton = FindObjectsOfType<JoyButtonScript>()[0];
@@ -186,6 +184,11 @@ public class player_Script : MonoBehaviour {
     {
         if (x < 0) return -x;
         else return x;
+    }
+
+    void PlayParticles(ParticleSystem particles)
+    {
+        particles.Play();
     }
 
     void GetInput()
@@ -267,9 +270,13 @@ public class player_Script : MonoBehaviour {
             if (currentSpeed > Values.Instance.airSpeed)
                 currentSpeed *= 0.99f;
             rb.velocity = new Vector3(0f, rb.velocity.y, currentSpeed);
-            if(!anim.GetCurrentAnimatorStateInfo(0).IsName("jump"))
+            if (!anim.GetCurrentAnimatorStateInfo(0).IsName("jump") && !anim.GetCurrentAnimatorStateInfo(0).IsName("jump_g"))
+            {
                 Flip();
+            }
             Spin();
+            if (spacebar)
+                rb.AddForce(new Vector3(0,-1300,0));
         }
         else if(Values.Instance.state == Values.State.Grind)
         {
@@ -285,6 +292,7 @@ public class player_Script : MonoBehaviour {
             {
                 currentSpeed = 0;
                 anim.SetBool("stopped", true);
+                brakeSnow.Stop();
                 GameManager.GetComponent<MainManager>().EndLevel();
             }
             rb.velocity = new Vector3(0f, rb.velocity.y, currentSpeed);
@@ -333,44 +341,51 @@ public class player_Script : MonoBehaviour {
         Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.deltaTime);
         rb.MoveRotation(rb.rotation * deltaRotation);
 
-        //(transform.rotation.eulerAngles.y);
-
+        //Debug.Log(transform.rotation.eulerAngles.y);
 
         if (anim.GetBool("backwards") == false)
         {
-            if (prevY_Flip > 180 && transform.rotation.eulerAngles.y <= 180 && transform.rotation.eulerAngles.x < 360)
+            if (triggers < 0)//frontflip
             {
-                anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
-            }
-        }
-        else
-        {
-            if (triggers < 0)
-            {
-                if (prevY_Flip < 180 && transform.rotation.eulerAngles.y >= 180)
-                {
-                    if(anim.GetBool("wasGrinding"))
-                    {
-                        if (transform.rotation.eulerAngles.x < 290)
-                        {
-                            anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
-                        }
-                    }
-                    else if (transform.rotation.eulerAngles.x < 360)
-                        anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
-                }
-            }
-            else
-            {
-                if (prevY_Flip > 180 && transform.rotation.eulerAngles.y <= 180 && transform.rotation.eulerAngles.x < 360)
+                if ((transform.eulerAngles.y <=180.5 && transform.eulerAngles.y>=179.5) && transform.eulerAngles.x < 360   && !alreadyflipping)
                 {
                     anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
+                    alreadyflipping = true;
+                }
+            }
+            else//backflip
+            {
+                if ((transform.eulerAngles.y <= 180.5 && transform.eulerAngles.y >= 179.5) && transform.rotation.eulerAngles.x > 0 && !alreadyflipping)
+                {
+                    Debug.Log(transform.rotation.eulerAngles);
+                    anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
+                    alreadyflipping = true;
+                }
+            }
+        }
+        else//backwards
+        {
+            if (triggers > 0)//frontflip
+            {
+                if ((transform.eulerAngles.y <= 180.5 && transform.eulerAngles.y >= 179.5) && transform.eulerAngles.x < 360 && !alreadyflipping)
+                {
+                    anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
+                    alreadyflipping = true;
+                }
+            }
+            else//backflip
+            {
+                if ((transform.eulerAngles.y <= 180.5 && transform.eulerAngles.y >= 179.5) && transform.rotation.eulerAngles.x > 0 && !alreadyflipping)
+                {
+                    Debug.Log(transform.rotation.eulerAngles);
+                    anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
+                    alreadyflipping = true;
                 }
             }
         }
         //(transform.rotation.eulerAngles);
         //transform.Rotate(new Vector3(-triggers * Values.Instance.flipRotation, 0f, 0f), Space.World); // flipping
-        prevY_Flip = transform.rotation.eulerAngles.y;
+        
     }
 
     void Spin()
@@ -397,19 +412,13 @@ public class player_Script : MonoBehaviour {
         //(Values.Instance.state.ToString());
         //(anim.GetInteger("180s"));
 	}    
-
-    void PlayParticles(ParticleSystem particles)
-    {
-        particles.transform.position = new Vector3(transform.position.x, transform.position.y - 2f, transform.position.z);
-        particles.Play();
-    }
-
     void ToAir()
     {
+        Debug.Log(PlayerPrefs.GetInt("DoubleBackflip"));
         currentSpinSpeed = 0;
         if(anim.GetBool("wasGrinding"))
         {
-            anim.Play("trickEnter_grind");
+            anim.Play("jump_g");
             if (objectToSpin.transform.localEulerAngles.y > 180f - rotationEps && objectToSpin.transform.localEulerAngles.y < 180f + rotationEps)
             {
                 //anim.Play("IDLEtoFAKIE");
@@ -442,7 +451,7 @@ public class player_Script : MonoBehaviour {
         rb.constraints = RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotationY;
         //transform.rotation = new Quaternion(railTransform.rotation.x, transform.rotation.y, transform.rotation.z, transform.rotation.w);
 
-        //objectToSpin.transform.localRotation = new Quaternion(0f, objectToSpin.transform.localRotation.y, 0f, objectToSpin.transform.localRotation.w);
+        objectToSpin.transform.localRotation = new Quaternion(0f, objectToSpin.transform.localRotation.y, 0f, objectToSpin.transform.localRotation.w);
     
 
 
@@ -572,6 +581,7 @@ public class player_Script : MonoBehaviour {
                                     //(skiHit.tag);
                                     if (skiHit.tag == "Ground")
                                     {
+                                        PlayParticles(impactSnowBig);
                                         Values.Instance.END = true;
                                         SetRagdoll(true);
                                         //("END");
@@ -582,6 +592,7 @@ public class player_Script : MonoBehaviour {
                                     //(skiHit.tag);
                                     if (skiHit.tag == "Ground")
                                     {
+                                        PlayParticles(impactSnowBig);
                                         Values.Instance.END = true;
                                         SetRagdoll(true);
                                         //("END");
@@ -605,6 +616,7 @@ public class player_Script : MonoBehaviour {
                 {
                     if(hit.tag == "Ground")
                     {
+                        PlayParticles(impactSnowBig);
                         Values.Instance.END = true;
                         SetRagdoll(true);
                     }
@@ -620,6 +632,8 @@ public class player_Script : MonoBehaviour {
                     }
                     if (hit.tag == "Ground" || hit.tag == "Grind")
                     {
+                        if(hit.tag == "Ground")
+                            PlayParticles(impactSnowBig);
                         Values.Instance.END = true;
                         SetRagdoll(true);
                     }
@@ -632,7 +646,7 @@ public class player_Script : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-        Debug.Log(transform.rotation.eulerAngles);
+        //Debug.Log(transform.rotation.eulerAngles);
         if (!Values.Instance.PAUSE)
         {
             GetInput();
@@ -641,9 +655,12 @@ public class player_Script : MonoBehaviour {
             {
                 CheckCollisions();
                 Move();
+                if (transform.rotation.eulerAngles.y < 50)
+                    alreadyflipping = false;
             }
             else
             {
+                
                 //END_Movement();
             }
         }

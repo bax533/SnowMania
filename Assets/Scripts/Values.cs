@@ -15,7 +15,6 @@ public class Values : MonoBehaviour {
     public bool END = false;
     public bool PAUSE = false;
 
-    public int current_lvl = 0;
 
     public int[] highscores = new int[10];
 
@@ -115,6 +114,22 @@ public class Values : MonoBehaviour {
                 return Tuple.Create(0, 0);
         }
     }
+
+    public Dictionary<string, string> tutorialMessages = new Dictionary<string, string>
+    {
+        { "1" , "press ride to speed up!" },
+        { "2", "rotate your phone to do flips!" },
+        { "3" , "hold spin when in air to spin!"},
+        { "4" , "the longer you hold, the more you will spin!" },
+        { "5" , "try to do a 360!"},
+        { "6" , "Now you can see a joystick in the bottom left corner" },
+        { "7" , "move it in the air to do different tricks!" },
+        { "8" , "now try doing a 360 with some grab!" },
+        { "good" , "well done!" },
+        { "bad" , "looks like you didn't get it :( you can restart the tutorial!" },
+
+    };
+
 
     private static Values m_oInstance = null;
 
