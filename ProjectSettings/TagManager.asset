@@ -8,6 +8,7 @@ TagManager:
   - Air
   - Grind
   - brakeTrigger
+  - endGround
   layers:
   - Default
   - TransparentFX

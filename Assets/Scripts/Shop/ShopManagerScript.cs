@@ -27,7 +27,7 @@ public class ShopManagerScript : MonoBehaviour
 
         if (PlayerPrefs.GetInt(Values.achievmentsDict[name].Item1) < Values.achievmentsDict[name].Item2)
         {
-            infoHelper.GetComponent<shopInfoHelper>().SetInfoDialog(name);
+            infoHelper.GetComponent<shopInfoHelper>().SetInfoDialog(name, Values.adSkins.Contains(name));
             return;
         }
 
@@ -51,8 +51,8 @@ public class ShopManagerScript : MonoBehaviour
 
 
         int partIndex = Int32.Parse(name[2].ToString());
-        int bottomIndex = Values.Instance.getMaterialIndex(name).Item1;
-        int topIndex = Values.Instance.getMaterialIndex(name).Item2;
+        int bottomIndex = Values.getMaterialIndex(name).Item1;
+        int topIndex = Values.getMaterialIndex(name).Item2;
 
         if (name[2] == '2')
         {
@@ -79,7 +79,7 @@ public class ShopManagerScript : MonoBehaviour
 
         if (PlayerPrefs.GetInt(Values.achievmentsDict[name].Item1) < Values.achievmentsDict[name].Item2)
         {
-            infoHelper.GetComponent<shopInfoHelper>().SetInfoDialog(name);
+            infoHelper.GetComponent<shopInfoHelper>().SetInfoDialog(name, Values.adSkins.Contains(name));
             return;
         }
 
@@ -101,8 +101,8 @@ public class ShopManagerScript : MonoBehaviour
         }
 
         int partIndex = name[1] == 'p' ? 1 : 0;
-        int bottomIndex = Values.Instance.getMaterialIndex(name).Item1;
-        int topIndex = Values.Instance.getMaterialIndex(name).Item2;
+        int bottomIndex = Values.getMaterialIndex(name).Item1;
+        int topIndex = Values.getMaterialIndex(name).Item2;
 
         helmetParts[partIndex].SetActive(true);
         helmetParts[partIndex].GetComponent<SkinnedMeshRenderer>().material = skinMaterials[topIndex];

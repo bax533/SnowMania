@@ -3,11 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using admob;
 
 public class shopInfoHelper : MonoBehaviour
 {
     public Image[] images = new Image[14];
     public GameObject infoDialog;
+    public GameObject adButton;
+
+    string currentSkinName;
+    string interstiotialID = "ca-app-pub-1887604439907523/1402676156";
+
+    public Text adButtonText;
 
     List<string> addValNames = new List<string>() { "sp1_1", "sp1_2", "sp2_1", "sp2_2", "sp2_3", "hf2", "hp1" };
 
@@ -51,7 +58,11 @@ public class shopInfoHelper : MonoBehaviour
 
     void Awake()
     {
-        for(int i=0; i < images.Length; i++)
+        AdProperties testProp = new AdProperties();
+        
+        Admob.Instance().initSDK(new AdProperties());
+        Admob.Instance().loadInterstitial(interstiotialID);
+        for (int i=0; i < images.Length; i++)
         {
             if (PlayerPrefs.GetInt(Values.achievmentsDict[IndexToName[i]].Item1) < Values.achievmentsDict[IndexToName[i]].Item2)
             {
@@ -66,13 +77,53 @@ public class shopInfoHelper : MonoBehaviour
         }
     }
 
-    public void SetInfoDialog(string skinName)
+    public void SetInfoDialog(string skinName, bool withAd)
     {
+        currentSkinName = skinName;
+        if (withAd)
+        {
+            if (skinName == "hp3")
+            {
+                adButtonText.text = "WATCH AD";
+            }
+            else
+            {
+                adButtonText.text = "WATCH AD +25";
+            }
+            adButton.SetActive(true);
+        }
+        else
+            adButton.SetActive(false);
+
+
         int curVal = PlayerPrefs.GetInt(Values.achievmentsDict[skinName].Item1);
         int goalVal = Values.achievmentsDict[skinName].Item2;
 
         GetComponentInChildren<Text>().text = NameToInfo[skinName] + " " + (addValNames.Contains(skinName) ? Math.Min(curVal, goalVal).ToString() + "/" + goalVal.ToString() : "");
         this.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(0f, 0f, 0f);
+    }
+
+
+    IEnumerator tryLoadingAd()
+    {
+        Admob.Instance().loadInterstitial(interstiotialID);
+        yield return new WaitForSeconds(1);
+        if (Admob.Instance().isInterstitialReady())
+        {
+            //Debug.Log("AD READY");
+            Admob.Instance().showInterstitial();
+
+            string prefsKey = Values.achievmentsDict[currentSkinName].Item1;
+            int curValue = PlayerPrefs.GetInt(prefsKey);
+            PlayerPrefs.SetInt(prefsKey, curValue + 25);
+        }
+        else
+            adButtonText.text = "TRY LATER";
+    }
+
+    public void ShowVideo()
+    {
+        StartCoroutine(tryLoadingAd());
     }
 
     public void CloseInfoDialog()

@@ -10,8 +10,8 @@ using UnityEngine.UI;
 public class score_Script : MonoBehaviour {
 
 
-    public TextMeshProUGUI levelScore_Text;
-    public TextMeshProUGUI levelScoreEnd_Text, levelHighscoreEnd_Text;
+    public Text levelScore_Text;
+    public Text levelScoreEnd_Text, levelHighscoreEnd_Text;
     public Text currentTrickName_Text, currentTrickScore_Text, currentSpin_Text, currentFlip_Text, grindFlips_Text, achievment_Text;
     public GameObject grindFlipsArrow, achievmentPanel;
     public static GameObject newHighscoreLabel;
@@ -20,8 +20,8 @@ public class score_Script : MonoBehaviour {
     public static float multiplier = 1f;
     int currentLevelScore, _flips = 0, _grindFlips = 0;
     int currentTrickScore, currentSpinScore, currentFlipScore;
-    bool already_trick, isGrinding;
-    bool alreadyFlip = false, alreadyOnGround = false;
+    bool already_trick;
+    bool alreadyOnGround = false;
 
 
     int sceneNr;
@@ -43,7 +43,7 @@ public class score_Script : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         
-        if (Values.Instance.state == Values.State.Air || Values.Instance.state == Values.State.Grind)
+        if (Values.state == Values.State.Air || Values.state == Values.State.Grind)
         {
             alreadyOnGround = false;
             if (anim.GetCurrentAnimatorStateInfo(0).IsName("truckDriverHold") || anim.GetCurrentAnimatorStateInfo(0).IsName("truckDriverHold_g"))
@@ -143,13 +143,16 @@ public class score_Script : MonoBehaviour {
                 already_trick = false;
 
 
-            currentSpinScore += anim.GetInteger("180s") * 5 * (isGrinding ? 2 : 1);
+            currentSpinScore += anim.GetInteger("180s") * 5 * (Values.state == Values.State.Grind ? 2 : 1);
 
             currentTrickScore_Text.text = currentTrickScore > 0 ? currentTrickScore.ToString() : "";
             currentSpin_Text.text = anim.GetInteger("180s") > 0 ? (180 * anim.GetInteger("180s")).ToString() : "";
 
             if (anim.GetInteger("Flips") > 0)
             {
+                if (_flips == 0 && _grindFlips == 0)
+                    currentTrickScore += Values.trick_scores["flip"];
+
                 if (anim.GetBool("wasGrinding"))
                     _grindFlips += 1;
                 else
@@ -157,7 +160,7 @@ public class score_Script : MonoBehaviour {
 
                 anim.SetInteger("Flips", anim.GetInteger("Flips")-1);
 
-                if (anim.GetFloat("triggers") > 0 && !anim.GetBool("alreadyFlip"))
+                if (anim.GetFloat("triggers") > 0)
                 {
                     if(!anim.GetBool("wasGrinding"))
                     {
@@ -191,9 +194,9 @@ public class score_Script : MonoBehaviour {
                         }
                     }
 
-                    anim.SetBool("alreadyFlip", true);
+                    
                 }
-                else if (anim.GetFloat("triggers") < 0 && !anim.GetBool("alreadyFlip"))
+                else if (anim.GetFloat("triggers") < 0)
                 {
                     if (!anim.GetBool("wasGrinding"))
                     {
@@ -226,13 +229,9 @@ public class score_Script : MonoBehaviour {
                                 grindFlips_Text.text = _grindFlips.ToString() + 'x' + ' ' + grindFlips_Text.text;
                         }
                     }
-
-                    anim.SetBool("alreadyFlip", true);
                 }
 
             }
-            //else
-            //    currentFlip_Text.text = "";
 
             multiplier = 1 + 0.3f * (_flips + _grindFlips) + 0.2f * anim.GetInteger("180s");
             currentTrickScore_Text.text = currentTrickScore > 0 ? currentTrickScore.ToString() : "";
@@ -256,7 +255,7 @@ public class score_Script : MonoBehaviour {
         levelScoreEnd_Text.text = levelScore.ToString();
         levelHighscoreEnd_Text.text = Math.Max(levelScore, PlayerPrefs.GetInt("LEVEL"+sceneNr.ToString())).ToString();
 
-        if(Values.Instance.END)
+        if(Values.END)
         {
             _flips = 0;
             _grindFlips = 0;
@@ -268,7 +267,6 @@ public class score_Script : MonoBehaviour {
             currentTrickScore_Text.text = "";
             currentSpin_Text.text = "";
             currentFlip_Text.text = "";
-            anim.SetBool("alreadyFlip", false);
         }
 	}
 
@@ -295,17 +293,13 @@ public class score_Script : MonoBehaviour {
 
             anim.SetInteger("Flips", 0);
             anim.SetInteger("180s", 0);
-            anim.SetBool("alreadyFlip", false);
         }
     }
 
 
     void addToAchievments()
     {
-        //(_grindFlips);
-        //(grindFlips_Text.text.Contains("Backflip"));
-
-        
+       
 
         if (currentFlip_Text.text.Contains("Backflip"))
         {

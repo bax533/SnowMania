@@ -6,19 +6,27 @@ using UnityEngine;
 
 public class Values : MonoBehaviour {
 
-    public int levelsCount = 5;
-
-    public float maxGround_Speed = 25f, addGround_Speed = 1.0f, minGround_Speed, brakeGround_Speed, airSpeed, flipRotation, addSpinSpeed, maxSpinSpeed, brakeFinish_Mult;
+    public static int levelsCount = 5;
+    public static float maxGround_Speed = 20f, addGround_Speed = 0.08f, minGround_Speed = 0.0f, brakeGround_Speed = 0.05f, airSpeed = 9f, flipRotation = 325f, addSpinSpeed = 0.25f, maxSpinSpeed = 13.5f, brakeFinish_Mult = 0.98f;
 
     public enum State { Ground, Air, Finish, Grind };
-    public State state = State.Ground;
-    public bool END = false;
-    public bool PAUSE = false;
+    public static State state = State.Ground;
+    public static bool END = false;
+    public static bool PAUSE = false;
 
+    public static List<string> adSkins = new List<string>()
+    {
+        "hp3",
+        "sp1_1",
+        "sp1_2",
+        "sp2_1",
+        "sp2_2",
+        "sp2_3"
+    };
 
-    public int[] highscores = new int[10];
+    public static int[] highscores = new int[10];
 
-    public string currentSki = "default", currentHelmet = "default";
+    public static string currentSki = "default", currentHelmet = "default";
 
 
     public static int trickAdd_score = 25, spin_score = 100;
@@ -31,8 +39,8 @@ public class Values : MonoBehaviour {
         { "shifty", 700 },
         { "japanGrab", 1100 },
         { "bowArrow", 1100 },
-        { "crossAir", 1100 }
-
+        { "crossAir", 1100 },
+        { "flip", 500 }
     };
 
 
@@ -66,7 +74,7 @@ public class Values : MonoBehaviour {
         return int.Parse(nr);
     }
 
-    public Tuple<int, int> getMaterialIndex(string skinName)
+    public static Tuple<int, int> getMaterialIndex(string skinName)
     {
         switch(skinName)
         {
@@ -115,7 +123,7 @@ public class Values : MonoBehaviour {
         }
     }
 
-    public Dictionary<string, string> tutorialMessages = new Dictionary<string, string>
+    public static Dictionary<string, string> tutorialMessages = new Dictionary<string, string>
     {
         { "1" , "press ride to speed up!" },
         { "2", "rotate your phone to do flips!" },
@@ -125,41 +133,11 @@ public class Values : MonoBehaviour {
         { "6" , "Now you can see a joystick in the bottom left corner" },
         { "7" , "move it in the air to do different tricks!" },
         { "8" , "now try doing a 360 with some grab!" },
+        { "9" , "hold joystick down when approaching a rail to grind!" },
+        { "10", "you can spin while grinding! Try to spin on next rail" },
+        { "11", "before every rail there will be a warning sign so you can be prepared!"},
         { "good" , "well done!" },
         { "bad" , "looks like you didn't get it :( you can restart the tutorial!" },
 
     };
-
-
-    private static Values m_oInstance = null;
-
-    public static Values Instance
-    {
-        get
-        {
-            if (m_oInstance == null)
-            {
-                m_oInstance = new Values();
-            }
-            return m_oInstance;
-        }
-    }
-
-    private Values()
-    {
-
-    }
-
-    private void Awake()
-    {
-        // if the singleton hasn't been initialized yet
-        if (m_oInstance != null && m_oInstance != this)
-        {
-            Destroy(this.gameObject);
-            return;//Avoid doing anything else
-        }
-
-        m_oInstance = this;
-        DontDestroyOnLoad(this.gameObject);
-    }
 }

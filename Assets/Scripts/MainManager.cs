@@ -9,6 +9,7 @@ public class MainManager : MonoBehaviour {
     public static bool endLevel = false;
     public Animator panelAnim;
     public GameObject pausePanel;
+    public GameObject gameInputPanel;
     public Animator transAnim;
 
 
@@ -47,12 +48,13 @@ public class MainManager : MonoBehaviour {
     public void Crash()
     {
         panelAnim.SetTrigger("crash");
-        Values.Instance.END = true;
-        Values.Instance.state = Values.State.Ground;
+        Values.END = true;
+        Values.state = Values.State.Ground;
     }
 
     public void EndLevel()
     {
+        gameInputPanel.SetActive(false);
         panelAnim.SetTrigger("gameover");
         score_Script.EndLVL();
     }
@@ -60,14 +62,14 @@ public class MainManager : MonoBehaviour {
     public void Pause()
     {
         pausePanel.SetActive(true);
-        //Values.Instance.PAUSE = true;
+        //Values.PAUSE = true;
         Time.timeScale = 0;
     }
 
     public void Continue()
     {
         pausePanel.SetActive(false);
-        //Values.Instance.PAUSE = false;
+        //Values.PAUSE = false;
         Time.timeScale = 1;
     }
 

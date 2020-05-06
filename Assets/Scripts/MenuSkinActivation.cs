@@ -39,8 +39,8 @@ public class MenuSkinActivation : MonoBehaviour
 
 
             int partIndex = Int32.Parse(skinname[2].ToString());
-            int bottomIndex = Values.Instance.getMaterialIndex(skinname).Item1;
-            int topIndex = Values.Instance.getMaterialIndex(skinname).Item2;
+            int bottomIndex = Values.getMaterialIndex(skinname).Item1;
+            int topIndex = Values.getMaterialIndex(skinname).Item2;
 
             if (partIndex == 2)
             {
@@ -88,8 +88,8 @@ public class MenuSkinActivation : MonoBehaviour
         }
 
         int partIndex = skinname[1] == 'p' ? 1 : 0;
-        int bottomIndex = Values.Instance.getMaterialIndex(skinname).Item1;
-        int topIndex = Values.Instance.getMaterialIndex(skinname).Item2;
+        int bottomIndex = Values.getMaterialIndex(skinname).Item1;
+        int topIndex = Values.getMaterialIndex(skinname).Item2;
 
         helmetParts[partIndex].SetActive(true);
         helmetParts[partIndex].GetComponent<SkinnedMeshRenderer>().material = skinMaterials[topIndex];

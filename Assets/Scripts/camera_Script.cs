@@ -22,7 +22,7 @@ public class camera_Script : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        if (!Values.Instance.END)
+        if (!Values.END)
         {
             Vector3 destination = target.transform.position + offset;
             orthSize = Math.Max(target.GetComponent<player_Script>().currentSpeed / 1.5f, 10.5f);

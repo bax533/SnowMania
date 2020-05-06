@@ -6,6 +6,6 @@ using UnityEngine.UI;
 public class testButton : MonoBehaviour {
 
 	void Update () {
-        GetComponent<Text>().text = Values.Instance.maxGround_Speed.ToString();
+        GetComponent<Text>().text = Values.maxGround_Speed.ToString();
 	}
 }

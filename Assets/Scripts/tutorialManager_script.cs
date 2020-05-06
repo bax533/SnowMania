@@ -21,23 +21,22 @@ public class tutorialManager_script : MonoBehaviour
             coverPanel.SetActive(true);
             imgPanel.SetActive(true);
         }
-        else if(name == "9")
+        else if(name == "special")
         {
-            Debug.Log(PlayerPrefs.GetInt("360withGrab"));
             if (PlayerPrefs.GetInt("360withGrab") != 0)
             {
-                content.text = Values.Instance.tutorialMessages["good"];
+                content.text = Values.tutorialMessages["good"];
             }
             else
             {
-                content.text = Values.Instance.tutorialMessages["bad"];
+                content.text = Values.tutorialMessages["bad"];
             }
             panel.SetActive(true);
             coverPanel.SetActive(true);
         }
         else
         {
-            content.text = Values.Instance.tutorialMessages[name];
+            content.text = Values.tutorialMessages[name];
             panel.SetActive(true);
             coverPanel.SetActive(true);
         }

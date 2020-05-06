@@ -92,7 +92,11 @@ public class MenuManager : MonoBehaviour {
     }
 
     void Start () {
-        if(!PlayerPrefs.HasKey("Backflips"))
+
+
+        //Input.gyro.enabled = true;
+
+        if (!PlayerPrefs.HasKey("Backflips"))
             PlayerPrefs.SetInt("Backflips", 0);
         
 
@@ -123,6 +127,12 @@ public class MenuManager : MonoBehaviour {
         if (!PlayerPrefs.HasKey("ad"))
             PlayerPrefs.SetInt("ad", 0);
 
+        if (!PlayerPrefs.HasKey("currentHelmet"))
+            PlayerPrefs.SetString("currentHelmet", "hdefault");
+
+        if (!PlayerPrefs.HasKey("currentSki"))
+            PlayerPrefs.SetString("currentSki", "sdefault");
+
         camMainPos = Base.position;
         camLevelsPos = Levels.position;
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -138,6 +148,7 @@ public class MenuManager : MonoBehaviour {
 
     void Awake()
     {
+        PlayerPrefs.SetInt("Tutorial", 11);
         if(PlayerPrefs.GetInt("Tutorial") != 0)
         {
             playButton.GetComponent<Image>().color = unlockedCol;
@@ -148,7 +159,7 @@ public class MenuManager : MonoBehaviour {
         }
 
 
-        for(int i=1; i <= Values.Instance.levelsCount; i++)
+        for(int i=1; i <= Values.levelsCount; i++)
         {
             if(PlayerPrefs.HasKey("LEVEL"+i.ToString()))
             {
