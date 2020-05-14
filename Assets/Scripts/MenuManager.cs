@@ -60,9 +60,12 @@ public class MenuManager : MonoBehaviour {
         levelsPanel.SetActive(false);
     }
 
-    public void LoadTutorial()
+    public void LoadTutorial(int nr)
     {
-        StartCoroutine(LoadLevelRoutine("TUTOR0"));
+        if (nr == 0)
+            StartCoroutine(LoadLevelRoutine("TUTOR0"));
+        else
+            StartCoroutine(LoadLevelRoutine("TUTOR2"));
     }
 
     public void LoadLevel(int nr)

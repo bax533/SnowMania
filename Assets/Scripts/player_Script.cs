@@ -216,10 +216,10 @@ public class player_Script : MonoBehaviour {
         {
             if (SceneManager.GetActiveScene().name != "TUTOR0")
             {
-                inputX = /*joystick.Horizontal;//*/Input.GetAxis("Horizontal");
-                inputY = /*-joystick.Vertical;//*/Input.GetAxis("Vertical");
+                inputX = joystick.Horizontal;//Input.GetAxis("Horizontal");
+                inputY = -joystick.Vertical;//*/Input.GetAxis("Vertical");
             }
-            triggers = /*-1.3f * Input.acceleration.normalized.x;//*/-Input.GetAxis("Trigger");
+            triggers = -1.3f * Input.acceleration.normalized.x;//*/-Input.GetAxis("Trigger");
         }
 
         if (triggers < -1) triggers = -1;
@@ -359,18 +359,17 @@ public class player_Script : MonoBehaviour {
 
     void Flip()
     {
-       
         Vector3 m_EulerAngleVelocity = new Vector3(-triggers * Values.flipRotation, 0f, 0f);
         Quaternion deltaRotation = Quaternion.Euler(m_EulerAngleVelocity * Time.fixedDeltaTime);
         rb.MoveRotation(rb.rotation * deltaRotation);
 
-        //Debug.Log(transform.rotation.eulerAngles.y);
-
+        Debug.Log(transform.eulerAngles.x);
+        
         if (anim.GetBool("backwards") == false)
         {
             if (triggers < 0)//frontflip
             {
-                if ((transform.eulerAngles.y <=181f && transform.eulerAngles.y>=179f) && transform.eulerAngles.x < 360   && !alreadyflipping)
+                if ((transform.eulerAngles.y <=190f && transform.eulerAngles.y>=170f) && transform.eulerAngles.x < 360 && !alreadyflipping)
                 {
                     anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
                     alreadyflipping = true;
@@ -378,7 +377,7 @@ public class player_Script : MonoBehaviour {
             }
             else//backflip
             {
-                if ((transform.eulerAngles.y <= 181f && transform.eulerAngles.y >= 179f) && transform.rotation.eulerAngles.x > 0 && !alreadyflipping)
+                if ((transform.eulerAngles.y <= 190f && transform.eulerAngles.y >= 170f) && transform.rotation.eulerAngles.x > 0 && !alreadyflipping)
                 {
                     anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
                     alreadyflipping = true;
@@ -389,7 +388,7 @@ public class player_Script : MonoBehaviour {
         {
             if (triggers > 0)//frontflip
             {
-                if ((transform.eulerAngles.y <= 181f && transform.eulerAngles.y >= 179f) && transform.eulerAngles.x < 360 && !alreadyflipping)
+                if ((transform.eulerAngles.y <= 190f && transform.eulerAngles.y >= 170f) && transform.eulerAngles.x < 360 && !alreadyflipping)
                 {
                     anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
                     alreadyflipping = true;
@@ -397,7 +396,7 @@ public class player_Script : MonoBehaviour {
             }
             else//backflip
             {
-                if ((transform.eulerAngles.y <= 181f && transform.eulerAngles.y >= 179f) && transform.rotation.eulerAngles.x > 0 && !alreadyflipping)
+                if ((transform.eulerAngles.y <= 190f && transform.eulerAngles.y >= 170f) && transform.rotation.eulerAngles.x > 0 && !alreadyflipping)
                 {
                     Debug.Log(transform.rotation.eulerAngles);
                     anim.SetInteger("Flips", anim.GetInteger("Flips") + 1);
@@ -433,6 +432,7 @@ public class player_Script : MonoBehaviour {
 
 	void Dbg()
 	{
+        //Debug.Log("DUPA");
         //(Values.state.ToString());
         //(anim.GetInteger("180s"));
 	}    
@@ -546,8 +546,9 @@ public class player_Script : MonoBehaviour {
         {
             //("END  SPIN");
             SetRagdoll(true);
-        } 
-            
+        }
+
+        alreadyflipping = false;
         currentSpinSpeed = 0f;
     }
     void ToFinish()

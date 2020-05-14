@@ -6156,7 +6156,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -9.458745e-11, y: 0.012717226, z: 0.00000001816079}
+  m_ConnectedAnchor: {x: -6.039045e-10, y: 0.012717271, z: 0.000000006519258}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -7660,7 +7660,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000000044781046, y: 0.013810126, z: 0.00000012463717}
+  m_ConnectedAnchor: {x: -2.9500766e-10, y: 0.013810059, z: 0.000000019506844}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -9961,7 +9961,7 @@ PrefabInstance:
     - target: {fileID: 55948843185448968, guid: 17e0be8abb0cf46428584b67e14403c2,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
-      value: 4
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 471654291524104209, guid: 17e0be8abb0cf46428584b67e14403c2,
         type: 3}
@@ -22450,7 +22450,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0000000071860353, y: 0.013810068, z: -0.00000007710333}
+  m_ConnectedAnchor: {x: 0.000000002592904, y: 0.0138100535, z: -0.000000010433724}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -22993,7 +22993,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0000000031141099, y: 0.019700058, z: 0.0032000742}
+  m_ConnectedAnchor: {x: 8.2945917e-10, y: 0.019700004, z: 0.0032000071}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
