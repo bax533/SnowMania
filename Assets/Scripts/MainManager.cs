@@ -12,7 +12,11 @@ public class MainManager : MonoBehaviour {
     public GameObject gameInputPanel;
     public Animator transAnim;
 
-
+    public void LoadTutorial(int nr)
+    {
+        endLevel = false;
+        StartCoroutine(LoadLevelRoutine("TUTOR" + nr.ToString()));
+    }
     public void LoadMenu()
     {
         StartCoroutine(LoadLevelRoutine(0));
